@@ -15,15 +15,14 @@ p Date4.today.national_holiday?
 
 
 url = "http://dia.kanachu.jp/bus/timetable?busstop=24201&pole=1&pole_seq=1&apply=2010/09/16&day="
+
 if Date4.today.national_holiday?
   url << "3"
   puts "today is sunday"
 else
   url << "1"
 end
-open(url) do |f|
-#  print f.read
-end
+
 
 html = Nokogiri::HTML(open(url), nil, 'UTF-8')
 
@@ -43,19 +42,23 @@ agent.page.search('td').each do |elem|
 end
 =end
 
-tds = html.xpath('//body').map{|elem|
-#  puts elem.content
-  elem.delete(" ")
+#tds = html.xpath('//td[@align="right"]').map{|elem|
+#tds = html.xpath('//tr[@align="center"]').map{|elem|
+nakami = Array.new
+
+tds = html.xpath('//tr').map{|elem|
+
   puts elem.content
+
 }
 
 
+puts tds.length
 
-y =  html.xpath('//td')
-html.xpath('//td').each do |elem|
+tds.delete_if{|x| x =~ /\D/ }
 
-end
 
+puts nakami.class
 
 # 平日
 #http://dia.kanachu.jp/bus/timetable?busstop=24201&pole=1&pole_seq=1&apply=2010/09/16&day=1
